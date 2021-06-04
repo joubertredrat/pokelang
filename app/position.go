@@ -12,37 +12,37 @@ type Position interface {
 	getCoordinatesKey() string
 }
 
-type PositionGame struct {
+type GamePosition struct {
 	coordinateNorthSouth int
 	coordinateEastWest   int
 	positions            map[string]bool
 }
 
-func NewPositionGame() Position {
-	return &PositionGame{
+func NewGamePosition() Position {
+	return &GamePosition{
 		coordinateNorthSouth: 0,
 		coordinateEastWest:   0,
 		positions:            map[string]bool{},
 	}
 }
 
-func (p *PositionGame) MoveToNorth() {
+func (p *GamePosition) MoveToNorth() {
 	p.coordinateNorthSouth++
 }
 
-func (p *PositionGame) MoveToSouth() {
+func (p *GamePosition) MoveToSouth() {
 	p.coordinateNorthSouth--
 }
 
-func (p *PositionGame) MoveToEast() {
+func (p *GamePosition) MoveToEast() {
 	p.coordinateEastWest--
 }
 
-func (p *PositionGame) MoveToWest() {
+func (p *GamePosition) MoveToWest() {
 	p.coordinateEastWest++
 }
 
-func (p *PositionGame) RegisterPosition() {
+func (p *GamePosition) RegisterPosition() {
 	ok := p.IsAlreadyVisited()
 	if !ok {
 		key := p.getCoordinatesKey()
@@ -50,12 +50,12 @@ func (p *PositionGame) RegisterPosition() {
 	}
 }
 
-func (p *PositionGame) IsAlreadyVisited() bool {
+func (p *GamePosition) IsAlreadyVisited() bool {
 	key := p.getCoordinatesKey()
 	_, ok := p.positions[key]
 	return ok
 }
 
-func (p *PositionGame) getCoordinatesKey() string {
+func (p *GamePosition) getCoordinatesKey() string {
 	return fmt.Sprintf("%d,%d", p.coordinateNorthSouth, p.coordinateEastWest)
 }

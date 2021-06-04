@@ -33,7 +33,7 @@ func TestGaming(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			game, _ := app.NewPokemonGame(
 				app.NewMemoryStorage(),
-				app.NewPositionGame(),
+				app.NewGamePosition(),
 				test.steps,
 			)
 
@@ -50,7 +50,7 @@ func TestGaming(t *testing.T) {
 func TestInvalidSteps(t *testing.T) {
 	_, err := app.NewPokemonGame(
 		app.NewMemoryStorage(),
-		app.NewPositionGame(),
+		app.NewGamePosition(),
 		"NESAO",
 	)
 
@@ -62,7 +62,7 @@ func TestInvalidSteps(t *testing.T) {
 func TestGameAlreadyStarted(t *testing.T) {
 	game, _ := app.NewPokemonGame(
 		app.NewMemoryStorage(),
-		app.NewPositionGame(),
+		app.NewGamePosition(),
 		"NLSO",
 	)
 
@@ -77,7 +77,7 @@ func TestGameAlreadyStarted(t *testing.T) {
 func TestGameNotFinished(t *testing.T) {
 	game, _ := app.NewPokemonGame(
 		app.NewMemoryStorage(),
-		app.NewPositionGame(),
+		app.NewGamePosition(),
 		"NLSO",
 	)
 

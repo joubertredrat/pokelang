@@ -7,7 +7,7 @@ import (
 )
 
 func TestPositionStart(t *testing.T) {
-	position := app.NewPositionGame()
+	position := app.NewGamePosition()
 
 	if position.IsAlreadyVisited() {
 		t.Error("position.IsAlreadyVisited() expected false, got true")
@@ -28,7 +28,7 @@ func TestPositionsMove(t *testing.T) {
 		{
 			name: "Testing moving to North",
 			getPosition: func() app.Position {
-				position := app.NewPositionGame()
+				position := app.NewGamePosition()
 				position.MoveToNorth()
 				return position
 			},
@@ -36,7 +36,7 @@ func TestPositionsMove(t *testing.T) {
 		{
 			name: "Testing moving to South",
 			getPosition: func() app.Position {
-				position := app.NewPositionGame()
+				position := app.NewGamePosition()
 				position.MoveToSouth()
 				return position
 			},
@@ -44,7 +44,7 @@ func TestPositionsMove(t *testing.T) {
 		{
 			name: "Testing moving to East",
 			getPosition: func() app.Position {
-				position := app.NewPositionGame()
+				position := app.NewGamePosition()
 				position.MoveToEast()
 				return position
 			},
@@ -52,7 +52,7 @@ func TestPositionsMove(t *testing.T) {
 		{
 			name: "Testing moving to West",
 			getPosition: func() app.Position {
-				position := app.NewPositionGame()
+				position := app.NewGamePosition()
 				position.MoveToWest()
 				return position
 			},
