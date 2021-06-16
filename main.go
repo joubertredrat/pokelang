@@ -1,7 +1,9 @@
 package main
 
-import "github.com/joubertredrat/pokelang/cmd"
+import (
+	"github.com/joubertredrat/pokelang/cmd/purist"
+)
 
 func main() {
-	cmd.Execute()
+	purist.Execute()
 }

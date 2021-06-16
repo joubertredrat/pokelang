@@ -1,4 +1,4 @@
-package cmd
+package purist
 
 import (
 	"fmt"
@@ -26,16 +26,12 @@ func showIndex() {
 }
 
 func showErrorSteps() {
-	fmt.Printf("\n\n")
 	fmt.Printf(" [ALERTA] Você deve ter informado alguma posição errada, tente novamente \n")
-	fmt.Printf("\n\n")
 	os.Exit(255)
 }
 
 func showInternalError() {
-	fmt.Printf("\n\n")
 	fmt.Printf(" [ERRO] Algo de errado não deu certo, tente novamente \n")
-	fmt.Printf("\n\n")
 	os.Exit(255)
 }
 
