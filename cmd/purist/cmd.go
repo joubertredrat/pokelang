@@ -6,38 +6,32 @@ import (
 	"path/filepath"
 
 	"github.com/joubertredrat/pokelang/app"
+	"github.com/joubertredrat/pokelang/cmd"
 )
 
 func showIndex() {
 	filename := filepath.Base(os.Args[0])
 
 	fmt.Printf("Pokelang: Bora caçar pokemons com golang? \n\n")
-	fmt.Printf("Como jogar: \n")
-	fmt.Printf("  %s capturar --casas [posicao{1,n}] \n\n", filename)
-	fmt.Printf("Nas casas deve ser informado \"N\" para mover para norte, \"S\" para mover para sul, \"L\" para mover para leste ou \"O\" para mover para oeste. \n")
-	fmt.Printf("Para cada posição informada, será capturado o pokemon nesta casa, não sendo possível capturar duas vezes em uma casa já visitada. \n")
-	fmt.Printf("Pelo menos uma posição deve ser informada. \n\n ")
-	fmt.Printf("Exemplos: \n")
-	fmt.Printf("  %s capturar --casas N \n", filename)
-	fmt.Printf("  %s capturar --casas NLSO \n", filename)
-	fmt.Printf("  %s capturar --casas NSNSNSNSNS \n", filename)
+	fmt.Printf("Como usar: \n")
+	fmt.Printf("  %s [command] \n\n", filename)
+	fmt.Printf("Comandos disponíveis: \n")
+	fmt.Printf("  ajuda		Exibe a ajuda de como jogar \n")
+	fmt.Printf("  capturar	Capturar os pokemons \n")
 	fmt.Printf("\n")
 	os.Exit(0)
 }
 
-func showErrorSteps() {
-	fmt.Printf(" [ALERTA] Você deve ter informado alguma posição errada, tente novamente \n")
+func showErrorCommand(cmd string) {
+	filename := filepath.Base(os.Args[0])
+
+	fmt.Printf("Erro: comando \"%s\" desconhecido para \"%s\" \n", cmd, filename)
 	os.Exit(255)
 }
 
-func showInternalError() {
-	fmt.Printf(" [ERRO] Algo de errado não deu certo, tente novamente \n")
+func showFlagRequiredCommand(flag string) {
+	fmt.Printf("Erro: flag \"%s\" obrigatória para o comando \"capturar\" \n", flag)
 	os.Exit(255)
-}
-
-func showResult(count uint) {
-	fmt.Printf(" [OK] Legal! Você capturou %d pokemons \n", count)
-	os.Exit(0)
 }
 
 func issetArg(arr []string, index int) bool {
@@ -45,35 +39,42 @@ func issetArg(arr []string, index int) bool {
 }
 
 func Execute() {
-	if !issetArg(os.Args, 1) || !issetArg(os.Args, 2) || !issetArg(os.Args, 3) {
+	if !issetArg(os.Args, 1) {
 		showIndex()
 	}
 
-	if os.Args[1] != "capturar" || os.Args[2] != "--casas" {
-		showIndex()
+	switch os.Args[1] {
+	case "capturar":
+		if !issetArg(os.Args, 2) || !issetArg(os.Args, 3) || os.Args[2] != "--casas" {
+			showFlagRequiredCommand("--casas")
+		}
+
+		position := app.NewGamePosition()
+		storage := app.NewMemoryStorage()
+		steps := os.Args[3]
+
+		game, errNewGame := app.NewPokemonGame(storage, position, steps)
+
+		if errNewGame != nil {
+			cmd.ShowErrorSteps()
+		}
+
+		errStart := game.Start()
+
+		if errStart != nil {
+			cmd.ShowInternalError()
+		}
+
+		count, errCount := game.GetPokemonCount()
+
+		if errCount != nil {
+			cmd.ShowInternalError()
+		}
+
+		cmd.ShowResult(count)
+	case "ajuda":
+		cmd.ShowHelp()
+	default:
+		showErrorCommand(os.Args[1])
 	}
-
-	position := app.NewGamePosition()
-	storage := app.NewMemoryStorage()
-	steps := os.Args[3]
-
-	game, errNewGame := app.NewPokemonGame(storage, position, steps)
-
-	if errNewGame != nil {
-		showErrorSteps()
-	}
-
-	errStart := game.Start()
-
-	if errStart != nil {
-		showInternalError()
-	}
-
-	count, errCount := game.GetPokemonCount()
-
-	if errCount != nil {
-		showInternalError()
-	}
-
-	showResult(count)
 }
