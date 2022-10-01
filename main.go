@@ -19,7 +19,7 @@ func main() {
 	case "urfavecli":
 		urfavecli.Execute()
 	default:
-		fmt.Println("CMD_TYPE env not defined, available options: purist, spf13cobra")
+		fmt.Println("CMD_TYPE env not defined, available options: purist, spf13cobra, urfavecli")
 	}
 
 }
